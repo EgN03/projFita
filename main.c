@@ -1,3 +1,7 @@
+/* Projeto 1 - Fita Cassete 
+Integrantes: 
+	Enrique Granado Novaes 32107803
+	Enzo Rocha Damato 32125992 */ 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
