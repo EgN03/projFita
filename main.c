@@ -39,36 +39,34 @@ int verifica(int perm[], int nMusicas,int tempo){
 		
 	}
 	if(soma>tempo*60/2)
-		return 0;
+		return -1;
 	
 	return a;
 }
-int permuta(int musicas[], int nMusicas, int perm[],int i,int tempo){
+bool permuta(int musicas[], int nMusicas, int perm[],int i,int tempo){
     if( i >= nMusicas){ // caso base
     	int a;
  		if((a = verifica(perm,nMusicas,tempo)) > 0){
  			imprima(perm,a,nMusicas);
-         	return a;
+         	return true;
         }
-        return 0;
  	}
 	else{
-    	int j,a;
+    	int j;
+		bool a;
         for(j=0; j <nMusicas; j++){
         	perm[i] = musicas[j];
             if(valida(perm,i))
-                if(permuta(musicas,nMusicas,perm,i+1,tempo)>0);
-                else{
-                	
-				}
+                a = permuta(musicas,nMusicas,perm,i+1,tempo);
+                if(a==true)return a;
         }
     }
-
+    return false;
 }
 
 void grava(int musicas[], int tempo,int nMusicas){
 	int* perm = malloc(nMusicas * sizeof(int));
-	permuta(musicas,nMusicas,perm,0,tempo);
+	if(permuta(musicas,nMusicas,perm,0,tempo) == false)printf("nao ha como gravar as musicas continuamente\n");
 }
 
 void lerAquivo(FILE* arquivo){
@@ -77,7 +75,7 @@ void lerAquivo(FILE* arquivo){
 	for(i=0;i<nTestes;i++){
 		total =0;
 		fscanf(arquivo, "%d", &tamanho);
-		printf("tamanho %d\n", tamanho);
+		printf("\ntamanho %d\n", tamanho);
 		
 		fscanf(arquivo, "%d", &nMusicas);
 		//printf("num %d\n", nMusicas);
@@ -95,19 +93,20 @@ void lerAquivo(FILE* arquivo){
 		}
 		if(total > tamanho*60){
 			printf("essas musicas nao cabem na fita\n");
-			break;
 		}
-		grava(musicas, tamanho, nMusicas);
+		else{
+			grava(musicas, tamanho, nMusicas);
+		}
 	}
 }
 
 int main()
 {
 	FILE *arquivo;
-	char nome[100] = "D:/enzod/downloadJogos/mack/proSoft/projFita/musicas.txt";
-	//printf("Qual o caminho do arquivo?\n");
-	//scanf("%s",nome);
-	//printf("%s\n",nome);
+	char nome[100]; //= "D:/mack/projAlg2/projFita-master/projFita-master/musicas.txt";
+	printf("Qual o caminho do arquivo?\n");
+	scanf("%s",nome);
+	printf("%s\n",nome);
 	arquivo = fopen(nome,"r");
 	while(arquivo == NULL){
 		printf("arquivo nao encontrado, digite o caminho completo e a extensao:\n");
